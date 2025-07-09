@@ -1,181 +1,296 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"> <!-- Déclaration de la langue française pour l'accessibilité -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"> <!-- Encodage des caractères UTF-8 pour supporter tous les caractères -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configuration responsive pour les appareils mobiles -->
+    <!-- Lien vers le CSS Bootstrap 5.3.7 depuis le CDN officiel -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script> <!--je préfère le voir là finalement-->
+    <!-- Script Bootstrap avec defer pour charger après le HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script>
     <title>Exercice 4 - Bootstrap</title>
+    <style>
+        /* Compense la navbar fixe pour éviter que le contenu passe dessous */
+        body {
+            padding-top: 70px; /* Espace égal à la hauteur de la navbar */
+        }
+
+        /* Espace de défilement pour que les titres ne soient pas masqués lors de la navigation par ancres */
+        h2[id],
+        h3[id] {
+            scroll-margin-top: 80px; /* Marge de défilement pour compenser la navbar fixe */
+        }
+
+        /* Styles d'accessibilité pour le focus clavier sur les contrôles du carrousel */
+        .carousel-control-prev:focus,
+        .carousel-control-next:focus {
+            outline: 2px solid #007bff; /* Contour bleu Bootstrap pour indiquer le focus */
+            outline-offset: 2px; /* Espacement du contour */
+        }
+        
+        /* Style de focus pour le titre de la navbar */
+        .navbar-brand:focus h1 {
+            outline: 2px solid #007bff; /* Contour bleu pour le titre principal */
+            outline-offset: 2px; /* Espacement du contour */
+        }
+        
+        /* Positionnement des chevrons du carrousel avec espacement des bords */
+        .carousel-control-prev { left: 15px; } /* Décale le chevron gauche de 15px du bord */
+        .carousel-control-next { right: 15px; } /* Décale le chevron droit de 15px du bord */
+        
+        /* Style de focus pour les indicateurs du carrousel */
+        .carousel-indicators button:focus {
+            outline: 2px solid #007bff; /* Contour visible pour les indicateurs */
+            outline-offset: 2px; /* Espacement du contour */
+        }
+        
+        /* Amélioration visuelle des chevrons du carrousel */
+        .carousel-control-prev,
+        .carousel-control-next {
+            background: rgba(0,0,0,0.5); /* Fond semi-transparent noir */
+            border-radius: 50%; /* Forme circulaire */
+            width: 50px; height: 50px; /* Taille fixe pour créer un cercle parfait */
+            top: 50%; transform: translateY(-50%); /* Centrage vertical */
+            border: 2px solid rgba(255,255,255,0.8); /* Bordure blanche semi-transparente */
+        }
+        
+        /* Style des icônes de chevrons pour une meilleure visibilité */
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-size: 20px 20px; /* Taille des flèches */
+            filter: brightness(0) invert(1); /* Transforme les flèches en blanc */
+        }
+        
+        /* Effets de survol pour les chevrons */
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            background: rgba(0,0,0,0.7); /* Fond plus foncé au survol */
+            border-color: rgba(255,255,255,1); /* Bordure blanche plus opaque */
+            transform: translateY(-50%) scale(1.1); /* Légère augmentation de taille */
+            transition: all .3s ease; /* Animation fluide */
+        }
+        
+        /* Style de focus spécifique pour les chevrons */
+        .carousel-control-prev:focus,
+        .carousel-control-next:focus {
+            outline: 3px solid #007bff; /* Contour plus épais pour les chevrons */
+            outline-offset: 2px; /* Espacement du contour */
+            background: rgba(0,0,0,0.6); /* Fond légèrement plus foncé */
+        }
+        
+        /* Style de focus pour les liens de navigation */
+        .nav-link:focus {
+            outline: 2px solid #007bff; /* Contour bleu pour les liens */
+            outline-offset: 2px; /* Espacement du contour */
+        }
+        
+        /* Défilement fluide pour toute la page */
+        html {
+            scroll-behavior: smooth; /* Animation de défilement lors des clics sur les ancres */
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light"> <!-- Utilisation de la classe navbar-light pour un style clair, bg-light pour le fond gris clair -->
-        <div class="container"> <!-- Conteneur centré pour limiter la largeur et aligner la navbar -->
-            <a class="navbar-brand" href="#">Navbar</a> <!-- Titre de la barre de navigation, inactif (href="#") -->
-            <button class="navbar-toggler" type="button">  <!-- Icône hamburger fournie par Bootstrap inactif -->
-                <span class="navbar-toggler-icon"></span>
+    <!-- Liens de navigation rapide (skip links) pour l'accessibilité -->
+    <a href="#main-content" class="visually-hidden-focusable">Aller au contenu principal</a>
+    <a href="#carousel" class="visually-hidden-focusable">Aller à la galerie</a>
+    <a href="#article1" class="visually-hidden-focusable">Aller au premier article</a>
+    <a href="#article2" class="visually-hidden-focusable">Aller au deuxième article</a>
+    <a href="#article3" class="visually-hidden-focusable">Aller au troisième article</a>
+    <a href="#article4" class="visually-hidden-focusable">Aller au quatrième article</a>
+
+    <!-- Barre de navigation Bootstrap fixe en haut de l'écran -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid"> <!-- Conteneur pleine largeur -->
+            <!-- Titre principal de la page dans la navbar -->
+            <a class="navbar-brand" href="#"><h1 class="mb-0">Mon Site Bootstrap</h1></a>
+            
+            <!-- Bouton hamburger pour les petits écrans -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Basculer la navigation">
+                <span class="navbar-toggler-icon"></span> <!-- Icône hamburger Bootstrap -->
             </button>
+            
+            <!-- Menu de navigation collapsible -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto"> <!-- Liste de navigation alignée à droite -->
+                    <li class="nav-item"><a class="nav-link" href="#article1">Premier article</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#article2">Deuxième article</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#carousel">Galerie</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#article3">Troisième article</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#article4">Quatrième article</a></li>
+                </ul>
+            </div>
         </div>
-    </nav> <!-- Fin de la navbar -->
+    </nav>
 
- <div class="container-fluid"> <!-- Conteneur Bootstrap utilisant 100% de la largeur de l'écran -->
-    <div class="row justify-content-xl-between"> <!-- Une seule ligne avec espacement pour les grands écrans -->
-        <div class="col-12 col-md-6 col-xl-4"> <!-- Premier paragraphe avec classes responsives -->
-            <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing eliuam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aut, consequuntur. Vitae unde consequuntur quae suscipit asperiores! 
-                Architecto expedita a maxime voluptate perferendis, quaerat voluptatum cort. Dolores, reprehenderit possimus harum, fugiat 
-                recusandae consectetur ipsa uam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aut, consequuntur. Vitae unde consequuntur quae suscipit asperiores! 
-                Archite.Ab nobis optio sed rem aut quam nesciunt repellendus quasi adipisci. Pariatur possimus aspernatur 
-                dolor corporisuam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aa maxime voluptate perferendis, quaerat voluptatum cort. Dolores, reprehenderit possimus harum, fugiat 
-                recusandae consectetur ipsa uam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aut, consequuntur. Vitae unde consequuntur quae suscipit asperiores! 
-                Archite.Ab nobis optio sed rem aut quam nesciunt repellendus quasi adipisci. P
-            </p>
+    <!-- Section principale du contenu -->
+    <main role="main" aria-label="Contenu principal" id="main-content">
+        <div class="container-fluid"> <!-- Conteneur pleine largeur -->
+            <!-- Ligne responsive avec espacement sur grands écrans -->
+            <div class="row justify-content-xl-between" role="group" aria-labelledby="content-title">
+                <!-- Titre de section invisible mais accessible aux lecteurs d'écran -->
+                <h2 id="content-title" class="visually-hidden">Articles principaux</h2>
+                
+                <!-- Premier article - responsive : 12 colonnes sur mobile, 6 sur tablette, 4 sur desktop -->
+                <div class="col-12 col-md-6 col-xl-4">
+                    <h3 id="article1">Premier article</h3> <!-- Titre avec ancre pour la navigation -->
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi beatae nam modi quo culpa quam laborum aliquid impedit velit. Mollitia deleniti soluta, perspiciatis ipsum molestiae harum blanditiis in porro a.
+                    Voluptatem, hic ipsum? Odio ut eaque accusamus aut ex at est quaerat! Rem possimus molestias vitae quisquam sapiente? Praesentium voluptatem accusamus soluta unde doloremque nam eum, sint atque deserunt quam?
+                    Facere, tenetur ut! Praesentium ex iste eaque necessitatibus nisi illum impedit facere distinctio velit expedita beatae laudantium mollitia recusandae architecto officia harum nobis, repudiandae, error porro sapiente nulla cum assumenda?
+                    Debitis inventore reiciendis quibusdam aliquam, praesentium ex facilis consequuntur veniam beatae cupiditate voluptatum earum, molestias ipsa velit soluta sit iste ratione atque. Assumenda, alias? Enim quae tenetur ullam quis in?
+                    Ullam, odio. Voluptas impedit earum aliquid, quaerat eos aliquam amet, neque tempora hic ullam consectetur aut ea architecto at perspiciatis dicta maxime similique. Magni sint dignissimos repellat veniam eaque sed!
+                    Id nobis veritatis dolores blanditiis odio aut asperiores facere rerum maiores illo nemo, quo mollitia at, ratione consectetur consequuntur deserunt! Voluptatum praesentium excepturi itaque ab cupiditate veniam fugiat nobis! Provident?
+                    Laudantium voluptates et repellat velit quos optio. Voluptatem ducimus quisquam similique ex sed provident exercitationem quaerat rem, harum quae ipsum velit nihil iure saepe nostrum sint eos id, nesciunt alias?
+                    Voluptate, id nemo architecto consectetur quo nesciunt magnam dolor aut mollitia, assumenda, modi libero. Eius sequi voluptatem ullam beatae ad corporis hic repellendus voluptatum, corrupti reprehenderit ipsa sit sed animi.
+                    Sed iure obcaecati ad adipisci unde harum hic rem ullam voluptate labore. Aspernatur accusantium eligendi ex. Deserunt reprehenderit dolores, quasi excepturi reiciendis eveniet ad eaque laboriosam culpa cupiditate, nesciunt dolor!
+                    Ipsam animi voluptates commodi, nesciunt iure itaque nemo modi vel. Vel, sunt obcaecati beatae quasi unde vitae velit, nobis et est eaque ipsum dolorem, ab perspiciatis praesentium officiis quisquam atque?
+                    Nisi corrupti itaque architecto doloribus maxime consequuntur. Fugiat, minima labore ipsa fugit ex quo doloremque provident delectus nisi dolorem praesentium recusandae exercitationem aliquid accusamus officiis nulla incidunt iure non rem!
+                    Nesciunt tempora velit quo magni aperiam? Explicabo, quos! Tempore aperiam minus ea tenetur, ut cum reiciendis iste perferendis dolore sed eveniet natus recusandae alias quam maiores distinctio incidunt tempora soluta!
+                    Consectetur illo, maiores dolores vel debitis aut maxime alias ex nulla cupiditate quidem! Consequatur, quasi voluptatibus. Possimus amet, vel adipisci neque sapiente accusantium aliquid impedit expedita saepe quam id harum.
+                    Laboriosam quod, quae accusamus adipisci eligendi doloremque aperiam necessitatibus, repellendus nobis soluta quisquam quam, fugit libero quia hic ad! Quisquam vel maiores fugit quaerat tenetur rerum consectetur veritatis magnam explicabo!
+                    Molestias amet repellendus ratione quia, laborum porro, ullam inventore fugiat nobis tempore ab id quos optio a voluptas officiis. Amet dicta consequuntur debitis, odio consectetur asperiores nemo incidunt maiores id!</p>
+                </div>
+                
+                <!-- Deuxième article - même structure responsive -->
+                <div class="col-12 col-md-6 col-xl-4">
+                    <h3 id="article2">Deuxième article</h3> <!-- Titre avec ancre pour la navigation -->
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae corporis beatae obcaecati atque dolore impedit dolorum ipsam culpa eos? Earum pariatur nostrum maiores doloremque? Quo sint sed facere. Sed, blanditiis.
+                    Perspiciatis vel quae sunt saepe delectus maxime illo molestias dignissimos cumque sapiente fuga, voluptate nisi, cupiditate eligendi labore autem velit dicta ex. Impedit molestiae fugiat dolorem inventore adipisci, quidem aperiam?
+                    Pariatur veritatis sint nisi aut possimus, minus ipsa, accusamus rerum quos incidunt voluptatibus debitis consequuntur ipsam temporibus modi facere sequi eaque! Quaerat repudiandae quibusdam voluptatum. Maxime illum voluptates totam cum!
+                    Nesciunt fugiat eveniet ipsam placeat quidem nulla, amet facilis quod, atque nam voluptates consequuntur numquam ea laudantium optio consequatur dolor distinctio? Vel inventore consectetur provident laboriosam a harum in modi.
+                    Vitae nobis maiores dolorum reiciendis nam ullam aperiam quam minima, corrupti, at placeat eos ad odio nisi explicabo cumque ipsum omnis qui pariatur quisquam sed. Corporis eveniet dignissimos perferendis recusandae?
+                    Ipsa, ipsam enim, maxime, sequi voluptatibus reiciendis quibusdam odit doloremque optio cum vitae. Perferendis quidem quo nostrum id cum ipsum illo vel, ad sunt debitis obcaecati sit doloribus reprehenderit accusamus.
+                    A veritatis corporis ullam, sed consequatur eveniet quibusdam! Officiis quibusdam aut et modi corrupti eaque amet delectus! Sapiente porro voluptates mollitia, delectus eos eius pariatur voluptatum quisquam id, a expedita?
+                    Culpa, nihil quos neque repellat saepe consectetur fugit error quas atque vitae. Quam architecto tempora deleniti. Aperiam minima excepturi, enim ab aspernatur, temporibus odio sunt illum, culpa fugit id vero!
+                    Commodi temporibus similique natus nostrum quaerat facilis consequatur accusamus eos? Nobis ullam sapiente tenetur perferendis maiores praesentium quos? Vel laboriosam minus aliquid pariatur omnis fugiat ex at placeat, ullam itaque.
+                    Corrupti, consequuntur. Corporis veniam aliquid quas nostrum, provident eos placeat quaerat! Veritatis a ullam culpa officia dolorum nulla, voluptates ea consequatur sunt, possimus hic natus alias incidunt amet. Et, optio!
+                    Dolore mollitia magnam ad quia officia voluptatum eligendi debitis enim neque dolorum rem sit voluptate numquam eaque ratione, rerum eveniet in iure. Iure recusandae beatae accusamus reiciendis error. Nisi, assumenda?
+                    Dignissimos iusto quis laboriosam odio iste voluptate? Rem nam perferendis exercitationem impedit nihil iste tempore tenetur, natus placeat iusto atque a quae, quisquam esse eos accusamus error assumenda accusantium repellat!
+                    Rerum labore maxime enim pariatur rem magni quod harum nisi, sit natus? Tempora voluptatum libero perspiciatis culpa reprehenderit, obcaecati ad tempore aliquid consequuntur dolorum excepturi laudantium, temporibus vel. Pariatur, debitis.
+                    Obcaecati similique harum quod vero, iusto quis asperiores assumenda totam beatae veniam, enim vel magni debitis adipisci inventore. Fuga, distinctio alias? Earum reprehenderit voluptatum corrupti quis suscipit iste illum cumque!
+                    Amet, consequatur in suscipit perspiciatis et commodi laborum nesciunt ipsa debitis, rerum ratione illo laboriosam similique voluptatem! Ad consequuntur sequi illum possimus id hic sapiente, ipsum dicta! Libero, id dicta.</p>
+                </div>
+            </div>
         </div>
-        <div class="col-12 col-md-6 col-xl-4"> <!-- Deuxième paragraphe avec classes responsives -->
-            <p>
-                Ab nobis optio sed rem aut quam nesciunt repellendus quasi adipisci. Pariatur possimus aspernatur 
-                dolor corporisuam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aut, consequuntur. Vitae unde consequuntur quae suscipit asperiores! 
-                Architecto expedita a maxime v?Ab nobis optio sed rem aut quam nesciunt repellendus quasi adipisci. Pariatur possimus aspernatur 
-                dolor corporisuam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aa maxime voluptate perferendis, quaerat voluptatum cort. Dolores, reprehenderit possimus harum, fugiat 
-                recusandae consectetur ipsa uam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aut, consequuntur. Vitae unde consequuntur quae suscipit asperiores! 
-                Archite.Ab nobis optio sed rem aut quam nesciunt repellendus quasi adipisci. P
-            </p>
-        </div>
-    </div>
-  </div>
+    </main>
 
-     <!-- Insertion du carrousel Bootstrap sur toute la largeur -->
-  <div class="row">
-    <div class="col-12">
-      <!-- Carrousel Bootstrap avec 3 images aléatoires de picsum.photos -->
-      <div
-        id="carouselPicsum"
-        class="carousel slide"
-        data-bs-ride="carousel"
-      >
-        <!-- Indicateurs du carrousel -->
-        <div class="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#carouselPicsum"
-            data-bs-slide-to="0"
-            class="active"
-            aria-current="true"
-            aria-label="Slide 1"
-          ></button> <!-- Bouton indicateur pour la première diapositive -->
-          <button
-            type="button"
-            data-bs-target="#carouselPicsum"
-            data-bs-slide-to="1"
-            aria-label="Slide 2"
-          ></button> <!-- Bouton indicateur pour la deuxième diapositive -->
-          <button
-            type="button"
-            data-bs-target="#carouselPicsum"
-            data-bs-slide-to="2"
-            aria-label="Slide 3"
-          ></button> <!-- Bouton indicateur pour la troisième diapositive -->
+    <!-- Section carrousel d'images -->
+    <section aria-labelledby="carousel-title" id="carousel">
+        <!-- Titre de section invisible mais accessible -->
+        <h2 id="carousel-title" class="visually-hidden">Galerie d'images</h2>
+        <div class="row">
+            <div class="col-12"> <!-- Carrousel sur toute la largeur -->
+                <!-- Carrousel Bootstrap avec attributs d'accessibilité -->
+                <div id="carouselPicsum" class="carousel slide" data-bs-ride="carousel"
+                     role="region" aria-label="Galerie d'images" aria-roledescription="carrousel">
+                    
+                    <!-- Indicateurs de position du carrousel -->
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselPicsum" data-bs-slide-to="0" class="active"
+                                aria-current="true" aria-label="Aller à la première image" tabindex="0"></button>
+                        <button type="button" data-bs-target="#carouselPicsum" data-bs-slide-to="1"
+                                aria-label="Aller à la deuxième image" tabindex="0"></button>
+                        <button type="button" data-bs-target="#carouselPicsum" data-bs-slide-to="2"
+                                aria-label="Aller à la troisième image" tabindex="0"></button>
+                    </div>
+                    
+                    <!-- Conteneur des slides avec annonces vocales -->
+                    <div class="carousel-inner" aria-live="polite">
+                        <!-- Instructions de navigation invisibles pour les lecteurs d'écran -->
+                        <div class="visually-hidden" id="carousel-instructions">
+                            Utilisez les flèches gauche et droite pour naviguer…
+                        </div>
+                        
+                        <!-- Première slide active -->
+                        <div class="carousel-item active">
+                            <img src="https://picsum.photos/1200/400?random=x" class="d-block w-100"
+                                 alt="Image décorative de paysage" role="img">
+                            <!-- Légende visible uniquement sur écrans moyens et plus -->
+                            <div class="carousel-caption d-none d-md-block"><h5>Image décorative 1</h5></div>
+                        </div>
+                        
+                        <!-- Deuxième slide -->
+                        <div class="carousel-item">
+                            <img src="https://picsum.photos/1200/400?random=y" class="d-block w-100"
+                                 alt="Image décorative de nature" role="img">
+                            <div class="carousel-caption d-none d-md-block"><h5>Image décorative 2</h5></div>
+                        </div>
+                        
+                        <!-- Troisième slide -->
+                        <div class="carousel-item">
+                            <img src="https://picsum.photos/1200/400?random=z" class="d-block w-100"
+                                 alt="Image décorative artistique" role="img">
+                            <div class="carousel-caption d-none d-md-block"><h5>Image décorative 3</h5></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bouton de navigation précédent -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPicsum"
+                            data-bs-slide="prev" tabindex="0" aria-describedby="carousel-instructions">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span> <!-- Icône décorative -->
+                        <span class="visually-hidden">Précédent</span> <!-- Texte accessible -->
+                    </button>
+                    
+                    <!-- Bouton de navigation suivant -->
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselPicsum"
+                            data-bs-slide="next" tabindex="0" aria-describedby="carousel-instructions">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span> <!-- Icône décorative -->
+                        <span class="visually-hidden">Suivant</span> <!-- Texte accessible -->
+                    </button>
+                </div>
+            </div>
         </div>
-        <!-- Conteneur des diapositives -->
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img
-              src="https://picsum.photos/1200/400?random=x"
-              class="d-block w-100"
-              alt="Image aléatoire 1"
-            />
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Image aléatoire 1</h5>
-            </div> <!-- Légende pour la première image -->
-          </div>
-          <div class="carousel-item">
-            <img
-              src="https://picsum.photos/1200/400?random=y"
-              class="d-block w-100"
-              alt="Image aléatoire 2"
-            />
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Image aléatoire 2</h5>
-            </div> <!-- Légende pour la deuxième image -->
-          </div>
-          <div class="carousel-item">
-            <img
-              src="https://picsum.photos/1200/400?random=z"
-              class="d-block w-100"
-              alt="Image aléatoire 3"
-            />
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Image aléatoire 3</h5>
-            </div> <!-- Légende pour la troisième image -->
-          </div>
-        </div>
-        <!-- Contrôles précédent/suivant -->
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#carouselPicsum"
-          data-bs-slide="prev"
-        >
-          <span
-            class="carousel-control-prev-icon"
-            aria-hidden="true"
-          ></span>
-          <span class="visually-hidden">Précédent</span>
-        </button> <!-- Flèche de navigation vers l'image'précédente -->
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#carouselPicsum"
-          data-bs-slide="next"
-        >
-          <span
-            class="carousel-control-next-icon"
-            aria-hidden="true"
-          ></span>
-          <span class="visually-hidden">Suivant</span>
-        </button> <!-- Flèche de navigation vers l'image suivante -->
-      </div>
-    </div>
-  </div>
- 
-<div class="container-fluid"> <!-- Conteneur Bootstrap utilisant 100% de la largeur de l'écran -->
-    <div class="row justify-content-xl-between"> <!-- Une seule ligne avec espacement pour les grands écrans -->
-        <div class="col-12 col-md-6 col-xl-4"> <!-- Premier paragraphe avec classes responsives -->
-            <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing eliuam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aut, consequuntur. Vitae unde consequuntur quae suscipit asperiores! 
-                Architecto expedita a maxime voluptate perferendis, quaerat voluptatum cort. Dolores, reprehenderit possimus harum, fugiat 
-                recusandae consectetur ipsa uam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aut, consequuntur. Vitae unde consequuntur quae suscipit asperiores! 
-                Archite.Ab nobis optio sed rem aut quam nesciunt repellendus quasi adipisci. Pariatur possimus aspernatur 
-                dolor corporisuam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aa maxime voluptate perferendis, quaerat voluptatum cort. Dolores, reprehenderit possimus harum, fugiat 
-                recusandae consectetur ipsa uam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aut, consequuntur. Vitae unde consequuntur quae suscipit asperiores! 
-                Archite.Ab nobis optio sed rem aut quam nesciunt repellendus quasi adipisci. P
-            </p>
-        </div>
-        <div class="col-12 col-md-6 col-xl-4"> <!-- Deuxième paragraphe avec classes responsives -->
-            <p>
-                Ab nobis optio sed rem aut quam nesciunt repellendus quasi adipisci. Pariatur possimus aspernatur 
-                dolor corporisuam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aut, consequuntur. Vitae unde consequuntur quae suscipit asperiores! 
-                Architecto expedita a maxime v?Ab nobis optio sed rem aut quam nesciunt repellendus quasi adipisci. Pariatur possimus aspernatur 
-                dolor corporisuam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aa maxime voluptate perferendis, quaerat voluptatum cort. Dolores, reprehenderit possimus harum, fugiat 
-                recusandae consectetur ipsa uam incidunt sunt doloribus sequi, voluptate uam incidunt sunt doloribus sequi, voluptate 
-                temporibus itaque laborum. Aut, consequuntur. Vitae unde consequuntur quae suscipit asperiores! 
-                Archite.Ab nobis optio sed rem aut quam nesciunt repellendus quasi adipisci. P
-            </p>
-        </div>
-    </div>
-  </div>
+    </section>
 
+    <!-- Section complémentaire avec articles supplémentaires -->
+    <aside role="complementary" aria-label="Contenu supplémentaire">
+        <div class="container-fluid"> <!-- Conteneur pleine largeur -->
+            <!-- Ligne responsive avec espacement sur grands écrans -->
+            <div class="row justify-content-xl-between" role="group" aria-labelledby="additional-content-title">
+                <!-- Titre de section invisible mais accessible -->
+                <h2 id="additional-content-title" class="visually-hidden">Articles supplémentaires</h2>
+                
+                <!-- Troisième article -->
+                <div class="col-12 col-md-6 col-xl-4">
+                    <h3 id="article3">Troisième article</h3> <!-- Titre avec ancre pour la navigation -->
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias rerum dolore corrupti est harum dolorum at maxime accusantium? Accusamus maxime culpa aperiam eum officiis nulla adipisci praesentium expedita, quasi debitis!
+                    Accusamus saepe delectus numquam corporis qui provident, molestias officia quas repellat debitis odit, explicabo earum eos quod necessitatibus? Fuga amet suscipit eaque error, doloribus dolor tenetur dolorum nam provident deleniti?
+                    Sunt alias voluptate nihil iste! Maxime culpa vero ullam ab amet quam quod nostrum quae. Nisi corrupti quidem dolores harum ea odit perspiciatis sed ut saepe numquam. Aliquid, error veniam.
+                    Saepe similique dolores maiores cupiditate fuga beatae excepturi quos consequatur, eveniet omnis aut sit. Officia provident ipsum assumenda totam molestias voluptas, ducimus, quaerat optio sapiente fugit velit fugiat. Aliquam, ullam!
+                    Magni hic quas et doloremque corporis nemo reiciendis ipsa architecto. Omnis exercitationem debitis laboriosam quos quo officia saepe, temporibus voluptate dicta quia, dolores iure repellat, blanditiis a aliquam praesentium sint.
+                    Hic molestias inventore distinctio voluptate illo deleniti recusandae quam minus repellat quasi aperiam mollitia pariatur, placeat nobis autem! Totam fugiat inventore et optio suscipit neque magnam sapiente. Excepturi, repellat facilis!
+                    Unde, ab obcaecati aliquid alias ducimus necessitatibus deleniti iste dicta est, in perferendis quo corrupti voluptatibus dolore ipsum fugit quaerat reiciendis impedit tempora? Maxime fugiat a inventore voluptate quod dolorem.
+                    Excepturi incidunt debitis placeat quia magnam culpa nulla repellendus, eaque voluptatem laudantium tempore magni expedita esse, aliquam fuga aspernatur officia ipsa consequatur fugit molestiae repudiandae modi dolores earum. Harum, expedita.
+                    Quidem laborum quia explicabo corporis eveniet illum ipsa aliquam nobis quo aliquid obcaecati impedit minus, eaque voluptas, voluptatibus magnam nemo, veniam neque. Ad suscipit iure ducimus vel, ab labore neque?
+                    Nesciunt consequatur facilis eveniet ullam dolor itaque incidunt vel quam voluptates saepe magnam tempore exercitationem quos sint esse qui mollitia voluptas necessitatibus hic ad, obcaecati expedita recusandae, explicabo laboriosam! Nisi.
+                    Velit natus provident nesciunt similique perspiciatis eligendi esse, eius possimus alias vero perferendis quos fugiat laboriosam a sapiente hic repellendus saepe. Mollitia quibusdam adipisci saepe perspiciatis! Voluptatibus quaerat eveniet sint.
+                    Est quasi cum modi enim. Qui accusamus dolore consequatur, inventore nihil maiores quas! Est voluptate commodi error hic et, a fugiat ullam odio eligendi non laudantium veritatis, quaerat laboriosam sunt.
+                    Facere tenetur distinctio similique veniam ullam placeat aut assumenda consequuntur, sunt eum dicta sequi sint maiores quis. Eos eligendi excepturi nulla molestias nostrum maiores architecto distinctio dolore hic, laboriosam rem.
+                    Odit ipsam hic obcaecati quam maiores quis inventore, quos illum eaque veritatis incidunt unde, temporibus sunt quisquam dicta modi quas. In culpa cum rem exercitationem cumque saepe veniam. Facilis, nobis.
+                    Eaque distinctio ratione sit, exercitationem qui magnam magni. Quas repellendus, adipisci porro eveniet nulla consequuntur, accusantium, eum enim esse voluptatem quos ducimus impedit quisquam error dolorem soluta architecto vitae nisi?</p>
+                </div>
+                
+                <!-- Quatrième article -->
+                <div class="col-12 col-md-6 col-xl-4">
+                    <h3 id="article4">Quatrième article</h3> <!-- Titre avec ancre pour la navigation -->
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni nostrum quia fuga asperiores error nulla, odio repellendus provident voluptate. Soluta aspernatur reiciendis expedita, voluptates magni fuga laborum hic quibusdam consectetur!
+                    Odio dolore error enim, voluptates quae eum tempore exercitationem praesentium rem amet vel itaque impedit pariatur quo distinctio illum perspiciatis? Corrupti laborum laudantium impedit voluptate possimus distinctio laboriosam alias reiciendis.
+                    Perspiciatis tenetur repellendus quisquam. At, neque illum. Eos quis harum voluptatum ab perferendis quos quisquam inventore veritatis eaque aspernatur delectus nostrum quam, sequi itaque, culpa nesciunt? Eaque doloribus sequi nam.
+                    Amet inventore corporis nemo molestias quam repellat illo aut vel quae. Voluptas quisquam quos laudantium enim totam autem, aperiam quasi explicabo labore beatae quidem veritatis quam veniam eius ratione suscipit!
+                    Iusto, cumque eveniet. Culpa magni iste iure vitae ex excepturi amet, cumque vel dolorum, ea fugiat soluta eum nesciunt voluptatum. Mollitia delectus quibusdam voluptates dolorum numquam temporibus qui suscipit sequi!
+                    Eligendi possimus fugiat nihil officia, sint tempora ex iste nisi quam aliquam! Modi, dignissimos. Et fugit sapiente ab placeat veritatis nihil, provident eius non, quibusdam veniam distinctio odit voluptatibus at?
+                    Ipsum nobis distinctio ut asperiores repellat ad, quisquam nemo, expedita doloremque totam saepe, quia velit. Voluptates nihil sint expedita iusto aperiam illum voluptatum, repudiandae ipsam error non fuga obcaecati quas.
+                    Eligendi reiciendis maiores obcaecati odit magni quas esse ut cupiditate labore assumenda facilis officiis sapiente fugiat nihil dolorum explicabo vero molestias eius cum nobis, nisi amet libero quidem tempora. Pariatur.
+                    Illum, consequatur aut? Odio praesentium molestias officia veniam. Autem facilis ipsum ea corrupti, accusantium cum culpa dolor nesciunt fuga. Consequatur minus nulla quo nihil quidem et maiores fugit aspernatur voluptatem.
+                    Praesentium, dolores voluptates, tenetur laborum quaerat perspiciatis et rerum eius consequatur fuga totam, aliquid rem odit! Voluptatem sit laboriosam eum similique distinctio labore expedita ipsa, natus molestias hic, dolorem dolore?
+                    Facilis modi, debitis omnis veritatis deserunt ut fuga quasi provident obcaecati blanditiis quia voluptatem odit consectetur nulla dignissimos optio magni quae officia vel eum consequatur. Laborum voluptatum quasi laudantium esse.
+                    Blanditiis excepturi quidem quaerat sit rem ipsa, earum eligendi accusantium autem! Atque deleniti aperiam id molestias ab odit hic consequuntur vel! Odio consequatur unde dolorem ullam, hic obcaecati laborum nemo?
+                    Aperiam saepe nostrum voluptatibus a odio sequi veniam veritatis numquam omnis mollitia inventore cum atque blanditiis quos facilis iusto recusandae, nesciunt debitis dolorum aliquid illum dolores. Incidunt cumque ut minima?
+                    Quia amet saepe earum aspernatur consequuntur aliquid ex laboriosam nisi recusandae quis et excepturi deleniti doloribus at dolorem neque fugiat, inventore quisquam exercitationem quidem quas. Doloribus consectetur officia voluptatum adipisci!
+                    Magni, animi cupiditate ad illo est sapiente earum, ipsam quia voluptatibus, nulla incidunt assumenda! Illo eum dolore in? Iure maiores minus hic repudiandae officia vitae quia ratione laborum cum maxime./p>
+                </div>
+            </div>
+        </div>
+    </aside>
 </body>
 </html>
